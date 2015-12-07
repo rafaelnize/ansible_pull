@@ -3,9 +3,14 @@
 - hosts: pull_mode_hosts
   remote_user: ubuntu
   sudo: yes
+  tasks:
+  - name: add official nginx repository
+    apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=present
 
-- name: add official nginx repository
-  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=present
+  - name: ansible pull install nginx web server and ensure its at the latest version
+    apt: name=nginx state=latest force=yes
 
-- name: install nginx web server and ensure its at the latest version
-  apt: name=nginx state=latest force=yes
+  - name: ansible pull install nmap
+    apt: name=nmap state=present
+
+
