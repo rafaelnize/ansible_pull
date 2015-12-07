@@ -1,6 +1,6 @@
 ---
 
-- hosts: security_group_webservers
+- hosts: pull_mode_hosts
   remote_user: ubuntu
   sudo: yes
 
