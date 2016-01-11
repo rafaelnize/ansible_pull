@@ -18,6 +18,10 @@
   remote_user: ubuntu
   sudo: yes
   tasks:
+
+    - name: remove official nginx repository
+      apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=absent
+
     - name: ansible pull install build-essential
       apt: name=build-essential state=present
 
