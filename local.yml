@@ -49,13 +49,6 @@
     - name: create symlink for node
       file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
 
-    - name: kill any previous ssh-agent
-      action: killall ssh-agent
-      ignore_errors: True
-
-    - name: enable ssh-agent
-      shell: eval $(ssh-agent)
-
     - name: "Check list of Node.js apps running."
       command: forever list
       register: forever_list
