@@ -1,16 +1,52 @@
 ---
 
+#- hosts: pull_mode_hosts
+#  remote_user: ubuntu
+#  sudo: yes
+#  tasks:
+#  - name: add official nginx repository
+#    apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=present
+
+#  - name: ansible pull install nginx web server and ensure its at the latest version
+#    apt: name=nginx state=latest force=yes
+
+#  - name: ansible pull install nmap
+#    apt: name=nmap state=present
+
+
 - hosts: pull_mode_hosts
   remote_user: ubuntu
   sudo: yes
   tasks:
-  - name: add official nginx repository
-    apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=present
+    - name: ansible pull install build-essential
+      apt: name=build-essential state=present
 
-  - name: ansible pull install nginx web server and ensure its at the latest version
-    apt: name=nginx state=latest force=yes
+    - name: ansible pull install curl
+      apt: name=curl state=present
 
-  - name: ansible pull install nmap
-    apt: name=nmap state=present
+    - name: ansible pull install git
+      apt: name=git state=present
 
+    - name: ansible pull install python
+      apt: name=python state=present
 
+    - name: ansible pull install nodejs
+      apt: name=nodejs state=present
+
+    - name: ansible pull install npm
+      apt: name=npm state=present
+
+    - name: ansible pull install nodemon
+      npm: name=forever global=yes state=latest
+
+    - name: install packages based on package.js
+      npm: path=package.json state=present
+
+    - name: "Check list of Node.js apps running."
+      command: forever list
+      register: forever_list
+      changed_when: false
+
+    - name: "Start example Node.js app."
+      command: forever start test_server.js
+      when: "forever_list.stdout.find('test_server.js') == -1"
