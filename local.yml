@@ -42,6 +42,9 @@
     - name: install packages based on package.js
       npm: path=package.json state=present
 
+    - name: create symlink for node
+      file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
+
     - name: "Check list of Node.js apps running."
       command: forever list
       register: forever_list
