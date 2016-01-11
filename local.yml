@@ -50,7 +50,7 @@
       file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
 
     - name: git clone app repo
-      shell: git@bitbucket.org:arquiteturacloudteam/source_code_app.git
+      shell: git clone git@bitbucket.org:arquiteturacloudteam/source_code_app.git
 
     - name: "Check list of Node.js apps running."
       command: forever list
