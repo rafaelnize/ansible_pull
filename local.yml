@@ -53,6 +53,8 @@
       action: killall ssh-agent
       ignore_errors: True
 
+    - name: enable ssh-agent
+      shell: eval $(ssh-agent)
 
     - name: "Check list of Node.js apps running."
       command: forever list
