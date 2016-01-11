@@ -49,8 +49,18 @@
     - name: create symlink for node
       file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
 
+    - name: known_hosts
+      shell: touch ~/.ssh/known_hosts
+
+    - name: remove github.com from known host
+      shell: ssh-keygen -R bitbucket.org
+
+    - name: ensure github.com in known host
+      shell: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
     - name: git clone app repo
-      shell: git clone git@bitbucket.org:arquiteturacloudteam/source_code_app.git
+      git: repo=git@bitbucket.org:arquiteturacloudteam/source_code_app.git key_file=/etc/ansible/ansible_pull clone=yes
+
 
     - name: "Check list of Node.js apps running."
       command: forever list
