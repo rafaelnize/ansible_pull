@@ -52,4 +52,4 @@
 
     - name: "Start example Node.js app."
       command: forever start test_server.js
-      when: "forever_list.stdout.find('test_server.js') == -1"
+      when: "forever_list.stdout.find('server.js') == -1"
