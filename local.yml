@@ -76,3 +76,6 @@
     - name: "Start example Node.js app."
       command: forever start /opt/app/server.js
       when: "forever_list.stdout.find('/opt/app/server.js') == -1"
+
+    - name: test new deployment
+    - shell: ls
