@@ -59,8 +59,7 @@
       shell: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
     - name: git clone app repo
-      git: repo=git@bitbucket.org:arquiteturacloudteam/source_code_app.git key_file=/etc/ansible/ansible_pull clone=yes
-
+      git: repo=git@bitbucket.org:arquiteturacloudteam/source_code_app.git key_file=/etc/ansible/ansible_pull update=yes clone=yes
 
     - name: "Check list of Node.js apps running."
       command: forever list
