@@ -40,11 +40,8 @@
     - name: ansible pull install npm
       apt: name=npm state=present
 
-    - name: ansible pull install nodemon
+    - name: ansible pull install forever daemon
       npm: name=forever global=yes state=latest
-
-    - name: install packages based on package.js
-      npm: path=package.json state=present
 
     - name: create symlink for node
       file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
@@ -58,8 +55,14 @@
     - name: ensure github.com in known host
       shell: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
+    - name: create app directory
+      file: source
+
     - name: git clone app repo
-      git: repo=git@bitbucket.org:arquiteturacloudteam/source_code_app.git key_file=/etc/ansible/ansible_pull update=yes clone=yes
+      git: repo=git@bitbucket.org:arquiteturacloudteam/source_code_app.git dest=/opt/ key_file=/etc/ansible/ansible_pull update=yes clone=yes
+
+    - name: install packages based on package.js
+      npm: path=package.json state=present
 
     - name: "Check list of Node.js apps running."
       command: forever list
@@ -68,4 +71,4 @@
 
     - name: "Start example Node.js app."
       command: forever start test_server.js
-      when: "forever_list.stdout.find('server.js') == -1"
+      when: "forever_list.stdout.find('/opt/server.js') == -1"
