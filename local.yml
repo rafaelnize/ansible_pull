@@ -47,15 +47,6 @@
     - name: create symlink for node
       file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
 
-    - name: known_hosts
-      shell: touch ~/.ssh/known_hosts
-
-    - name: remove github.com from known host
-      shell: ssh-keygen -R bitbucket.org
-
-    - name: ensure github.com in known host
-      shell: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-
     - name: create app directory
       file: path=/opt/app/ state=directory mode=0755
 
@@ -63,7 +54,7 @@
       git: |
         repo=git@bitbucket.org:arquiteturacloudteam/source_code_app.git
         dest=/opt/app/ key_file=/etc/ansible/ansible_pull
-        accept_hostkey=yes update=yes clone=yes
+        accept_hostkey=yes update=yes force=yes
 
     - name: install packages based on package.js
       npm: path=/opt/app/ state=present
