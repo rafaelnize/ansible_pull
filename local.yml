@@ -16,6 +16,7 @@
 
 - hosts: pull_mode_hosts
   remote_user: ubuntu
+  connection: local
   sudo: yes
   tasks:
 
@@ -59,10 +60,13 @@
       file: path=/opt/app/ state=directory mode=0755
 
     - name: git clone app repo
-      git: repo=git@bitbucket.org:arquiteturacloudteam/source_code_app.git dest=/opt/app/ key_file=/etc/ansible/ansible_pull update=yes clone=yes
+      git: |
+        repo=git@bitbucket.org:arquiteturacloudteam/source_code_app.git
+        dest=/opt/app/ key_file=/etc/ansible/ansible_pull
+        accept_hostkey=yes update=yes clone=yes
 
     - name: install packages based on package.js
-      npm: path=/opt/app/package.json state=present
+      npm: path=/opt/app/ state=present
 
     - name: "Check list of Node.js apps running."
       command: forever list
@@ -70,5 +74,5 @@
       changed_when: false
 
     - name: "Start example Node.js app."
-      command: forever start test_server.js
+      command: forever start /opt/app/server.js
       when: "forever_list.stdout.find('/opt/app/server.js') == -1"
