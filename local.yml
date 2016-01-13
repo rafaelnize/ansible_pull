@@ -48,7 +48,7 @@
       file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
 
     - name: create app directory
-      file: path=/opt/app/ state=directory mode=0755 own
+      file: path=/opt/app/ state=directory mode=0755 owner=root group=root
 
     - name: git clone app repo
       git: |
