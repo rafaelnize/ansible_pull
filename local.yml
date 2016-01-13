@@ -42,13 +42,13 @@
       apt: name=npm state=present
 
     - name: ansible pull install forever daemon
-      npm: name=forever global=yes state=latest
+      npm: name=forever global=yes state=present
 
     - name: create symlink for node
       file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
 
     - name: create app directory
-      file: path=/opt/app/ state=directory mode=0755
+      file: path=/opt/app/ state=directory mode=0755 own
 
     - name: git clone app repo
       git: |
@@ -60,12 +60,12 @@
       npm: path=/opt/app/ state=present
 
     - name: "Check list of Node.js apps running."
-      command: forever list
+      shell: forever list
       register: forever_list
       changed_when: false
 
     - name: "Start example Node.js app."
-      command: forever start /opt/app/server.js
+      shell: forever start /opt/app/server.js
       when: "forever_list.stdout.find('/opt/app/server.js') == -1"
 
     - name: test new deployment
