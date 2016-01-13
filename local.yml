@@ -44,6 +44,9 @@
     - name: ansible pull install forever daemon
       npm: name=forever global=yes state=present
 
+    - name: nodemon
+      npm: name=nodemon state=present global=yes
+
     - name: create symlink for node
       file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
 
@@ -57,16 +60,13 @@
         accept_hostkey=yes update=yes force=yes
 
     - name: install packages based on package.js
-      npm: path=/opt/app/ state=present
+      npm: path=/opt/app/ state=present global=yes
 
-    - name: "Check list of Node.js apps running."
-      shell: forever list
-      register: forever_list
-      changed_when: false
+    #- name: "Check list of Node.js apps running."
+    #  shell: forever list
+    #  register: forever_list
+    #  changed_when: false
 
     - name: "Start example Node.js app."
-      shell: forever start /opt/app/server.js
-      when: "forever_list.stdout.find('/opt/app/server.js') == -1"
-
-    - name: test new deployment
-    - shell: ls
+      command: nodemon /opt/app/server.js
+      #when: "forever_list.stdout.find('/opt/app/server.js') == -1"
