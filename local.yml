@@ -1,27 +1,9 @@
 ---
-
-#- hosts: pull_mode_hosts
-#  remote_user: ubuntu
-#  sudo: yes
-#  tasks:
-#  - name: add official nginx repository
-#    apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=present
-
-#  - name: ansible pull install nginx web server and ensure its at the latest version
-#    apt: name=nginx state=latest force=yes
-
-#  - name: ansible pull install nmap
-#    apt: name=nmap state=present
-
-
 - hosts: pull_mode_hosts
   remote_user: ubuntu
   connection: local
   sudo: yes
   tasks:
-
-    - name: remove official nginx repository
-      apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=absent
 
     - name: ansible pull install build-essential
       apt: name=build-essential state=present
@@ -35,38 +17,14 @@
     - name: ansible pull install python
       apt: name=python state=present
 
-    - name: ansible pull install nodejs
-      apt: name=nodejs state=present
-
-    - name: ansible pull install npm
-      apt: name=npm state=present
-
-    - name: ansible pull install forever daemon
-      npm: name=forever global=yes state=present
-
-    - name: nodemon
-      npm: name=nodemon state=present global=yes
-
-    - name: create symlink for node
-      file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
-
     - name: create app directory
-      file: path=/opt/app/ state=directory mode=0755 owner=root group=root
+      file: path=/opt/deploy/ state=directory mode=0755 owner=root group=root
 
     - name: git clone app repo
       git: |
         repo=git@bitbucket.org:arquiteturacloudteam/source_code_app.git
-        dest=/opt/app/ key_file=/etc/ansible/ansible_pull
+        dest=/opt/deploy/ key_file=/etc/ansible/ansible_pull
         accept_hostkey=yes update=yes force=yes
 
-    - name: install packages based on package.js
-      npm: path=/opt/app/ state=present global=yes
-
-    #- name: "Check list of Node.js apps running."
-    #  shell: forever list
-    #  register: forever_list
-    #  changed_when: false
-
-    - name: "Start example Node.js app."
-      command: nodemon /opt/app/server.js
-      #when: "forever_list.stdout.find('/opt/app/server.js') == -1"
+    - name: execute Docker compose
+      shell: docker-compose up chdir=/opt/deploy
