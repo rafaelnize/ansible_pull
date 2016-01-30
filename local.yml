@@ -26,8 +26,8 @@
         dest=/opt/deploy/ key_file=/etc/ansible/ansible_pull
         accept_hostkey=yes update=yes force=yes
 
+    - name: change directory
+      shell: cd /opt/deploy/
+
     - name: execute Docker compose
       shell: docker-compose up chdir=/opt/deploy
-
-    - name: finish
-      shell: echo "teste"
