@@ -30,7 +30,9 @@
       shell: cd /opt/deploy/
 
     - name: execute Docker compose
-      shell: docker-compose up chdir=/opt/deploy
+      shell: docker-compose up
+        args:
+             chdir=/opt/deploy
 
     - name: docker-compose ps
       shell: docker-compose ps
