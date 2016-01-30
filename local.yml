@@ -29,9 +29,8 @@
     - name: change directory
       shell: cd /opt/deploy/
 
-    - shell: docker-compose up
-      args:
-        chdir=/opt/deploy
+    - shell: cd /opt/deploy; docker-compose up
 
+    
     - name: docker-compose ps
       shell: docker-compose ps
