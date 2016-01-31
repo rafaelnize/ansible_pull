@@ -29,8 +29,8 @@
     - name: change directory
       shell: cd /opt/deploy/
 
-    - shell: cd /opt/deploy; docker-compose up
+    - shell: cd /opt/deploy; docker-compose up -d
 
-    
+
     - name: docker-compose ps
       shell: docker-compose ps
